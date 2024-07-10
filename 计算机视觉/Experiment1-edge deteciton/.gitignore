@@ -1,0 +1,12 @@
+*.aux
+*.tex
+*.sty
+*.bib
+*.toc
+*.gz
+*.out
+*.log
+*.blg
+*.bbl
+python-latex-highlighting/*
+figures/*
