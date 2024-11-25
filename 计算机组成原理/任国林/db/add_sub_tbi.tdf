@@ -1,0 +1,40 @@
+--lpm_add_sub CARRY_CHAIN="MANUAL" CARRY_CHAIN_LENGTH=48 DEVICE_FAMILY="Cyclone III" LPM_REPRESENTATION="UNSIGNED" LPM_WIDTH=8 ONE_INPUT_IS_CONSTANT="NO" add_sub cin cout dataa datab overflow result
+--VERSION_BEGIN 9.1SP2 cbx_cycloneii 2010:03:24:20:43:43:SJ cbx_lpm_add_sub 2010:03:24:20:43:43:SJ cbx_mgl 2010:03:24:21:01:05:SJ cbx_stratix 2010:03:24:20:43:43:SJ cbx_stratixii 2010:03:24:20:43:43:SJ  VERSION_END
+
+
+-- Copyright (C) 1991-2010 Altera Corporation
+--  Your use of Altera Corporation's design tools, logic functions 
+--  and other software and tools, and its AMPP partner logic 
+--  functions, and any output files from any of the foregoing 
+--  (including device programming or simulation files), and any 
+--  associated documentation or information are expressly subject 
+--  to the terms and conditions of the Altera Program License 
+--  Subscription Agreement, Altera MegaCore Function License 
+--  Agreement, or other applicable license agreement, including, 
+--  without limitation, that your use is for the sole purpose of 
+--  programming logic devices manufactured by Altera and sold by 
+--  Altera or its authorized distributors.  Please refer to the 
+--  applicable agreement for further details.
+
+
+
+--synthesis_resources = lut 16 
+SUBDESIGN add_sub_tbi
+( 
+	add_sub	:	input;
+	cin	:	input;
+	cout	:	output;
+	dataa[7..0]	:	input;
+	datab[7..0]	:	input;
+	overflow	:	output;
+	result[7..0]	:	output;
+) 
+VARIABLE
+	result_int[9..0]	:	WIRE;
+BEGIN 
+	result_int[] = (0, dataa[], cin) + (0, !add_sub $ datab[], cin);
+	result[] = result_int[8..1];
+	cout = result_int[9];
+	overflow = add_sub $ result_int[9];
+END;
+--VALID FILE

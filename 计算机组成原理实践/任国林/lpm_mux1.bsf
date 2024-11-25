@@ -1,0 +1,102 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "symbol" (version "1.1"))
+(symbol
+	(rect 0 0 152 176)
+	(text "lpm_mux1" (rect 50 2 120 18)(font "Arial" (font_size 10)))
+	(text "inst" (rect 8 160 25 172)(font "Arial" ))
+	(port
+		(pt 0 40)
+		(input)
+		(text "data7x[31..0]" (rect 0 0 74 14)(font "Arial" (font_size 8)))
+		(text "data7x[31..0]" (rect 4 27 66 40)(font "Arial" (font_size 8)))
+		(line (pt 0 40)(pt 72 40)(line_width 3))
+	)
+	(port
+		(pt 0 56)
+		(input)
+		(text "data6x[31..0]" (rect 0 0 74 14)(font "Arial" (font_size 8)))
+		(text "data6x[31..0]" (rect 4 43 66 56)(font "Arial" (font_size 8)))
+		(line (pt 0 56)(pt 72 56)(line_width 3))
+	)
+	(port
+		(pt 0 72)
+		(input)
+		(text "data5x[31..0]" (rect 0 0 74 14)(font "Arial" (font_size 8)))
+		(text "data5x[31..0]" (rect 4 59 66 72)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 72 72)(line_width 3))
+	)
+	(port
+		(pt 0 88)
+		(input)
+		(text "data4x[31..0]" (rect 0 0 74 14)(font "Arial" (font_size 8)))
+		(text "data4x[31..0]" (rect 4 75 66 88)(font "Arial" (font_size 8)))
+		(line (pt 0 88)(pt 72 88)(line_width 3))
+	)
+	(port
+		(pt 0 104)
+		(input)
+		(text "data3x[31..0]" (rect 0 0 74 14)(font "Arial" (font_size 8)))
+		(text "data3x[31..0]" (rect 4 91 66 104)(font "Arial" (font_size 8)))
+		(line (pt 0 104)(pt 72 104)(line_width 3))
+	)
+	(port
+		(pt 0 120)
+		(input)
+		(text "data2x[31..0]" (rect 0 0 74 14)(font "Arial" (font_size 8)))
+		(text "data2x[31..0]" (rect 4 107 66 120)(font "Arial" (font_size 8)))
+		(line (pt 0 120)(pt 72 120)(line_width 3))
+	)
+	(port
+		(pt 0 136)
+		(input)
+		(text "data1x[31..0]" (rect 0 0 74 14)(font "Arial" (font_size 8)))
+		(text "data1x[31..0]" (rect 4 123 66 136)(font "Arial" (font_size 8)))
+		(line (pt 0 136)(pt 72 136)(line_width 3))
+	)
+	(port
+		(pt 0 152)
+		(input)
+		(text "data0x[31..0]" (rect 0 0 74 14)(font "Arial" (font_size 8)))
+		(text "data0x[31..0]" (rect 4 139 66 152)(font "Arial" (font_size 8)))
+		(line (pt 0 152)(pt 72 152)(line_width 3))
+	)
+	(port
+		(pt 80 176)
+		(input)
+		(text "sel[2..0]" (rect 0 0 44 14)(font "Arial" (font_size 8)))
+		(text "sel[2..0]" (rect 84 163 121 176)(font "Arial" (font_size 8)))
+		(line (pt 80 176)(pt 80 164)(line_width 3))
+	)
+	(port
+		(pt 152 96)
+		(output)
+		(text "result[31..0]" (rect 0 0 67 14)(font "Arial" (font_size 8)))
+		(text "result[31..0]" (rect 92 83 147 96)(font "Arial" (font_size 8)))
+		(line (pt 152 96)(pt 88 96)(line_width 3))
+	)
+	(drawing
+		(line (pt 72 24)(pt 72 168)(line_width 1))
+		(line (pt 88 32)(pt 88 160)(line_width 1))
+		(line (pt 72 24)(pt 88 32)(line_width 1))
+		(line (pt 72 168)(pt 88 160)(line_width 1))
+	)
+)

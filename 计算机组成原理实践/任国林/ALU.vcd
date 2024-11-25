@@ -1,0 +1,126 @@
+$comment
+Copyright (C) 1991-2010 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+$end
+
+$date 
+  03/16/2024 14:00:22 
+$end
+$version 
+ QUARTUS_VCD_EXPORT 1.0 
+$end
+$timescale
+  1 ps
+$end
+$scope module ALU $end
+$var reg 32 ! a[31:0] $end
+$var reg 32 " b[31:0] $end
+$var reg 4 # op[3:0] $end
+$var reg 32 $ Out[31:0] $end
+$upscope $end
+$enddefinitions $end
+#0
+$dumpvars
+b1111 !
+b1010 "
+b0 #
+b11001 $
+$end
+#10000
+b1 #
+b101 $
+#20000
+b11111111111111111111111111110001 !
+b1000000 "
+b0 #
+b110001 $
+#30000
+b10100 "
+b1 #
+b11111111111111111111111111011101 $
+#40000
+b1111111 !
+b10 #
+b1111111 $
+#50000
+b11111111111111111111111110000000 !
+b1111 "
+b11111111111111111111111110001111 $
+#60000
+b1010 !
+b101 "
+b100 #
+b0 $
+#70000
+b1111 "
+b1 $
+#80000
+b11111111111111111111111111111011 "
+b0 $
+#90000
+b11111111111111111111111111110110 !
+b101 "
+b1 $
+#100000
+b1010 !
+b1010 "
+b101 #
+#110000
+b11111111111111111111111111010010 !
+b11111111111111111111111111001100 "
+b0 $
+#120000
+b1001001 !
+b11010 "
+b1000 #
+b1000 $
+#130000
+b11111111111111111111111111011100 "
+b1001 #
+b11111111111111111111111110010101 $
+#140000
+b111011 !
+b10 "
+b110 #
+b11101100 $
+#150000
+b11111111111111111111111111001100 !
+b100 "
+b11111111111111111111110011000000 $
+#160000
+b111011 !
+b11 "
+b111 #
+b111 $
+#170000
+b11111111111111111111111111000000 !
+b100 "
+b11111111111111111111111111111100 $
+#180000
+b11111111111111111111111110110100 !
+b11001 "
+b1010 #
+b0 $
+#190000
+b11111111111111111111111110011110 "
+#200000
+b1010 !
+b1011 "
+b1 $
+#210000
+b0 !
+b0 "
+b0 #
+b0 $
+#1000000000

@@ -1,113 +1,133 @@
-﻿import numpy as np
+import numpy as np
 import copy
 import pandas as pd
 import random
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, classification_report
 
+class SVM():
+    def __init__(self, kernel='linear', C=1.0, epsilon=1e-6, max_passes=50):
+        self.kernel = kernel  # 内核类型
+        self.C = C  # 惩罚参数
+        self.epsilon = epsilon  # 容忍度
+        self.max_passes = max_passes  # 最大迭代次数
 
-class SVM:
-    def __init__(self, C=1.0, kernel='linear', toler=0.001, max_iter=40):
-        self.C = C
-        self.kernel = kernel
-        self.tol = toler
-        self.max_iter = max_iter
-        self.b = None
-        self.alpha = None
         self.w = None
+        self.b = None
+        self.alphas = None
+
+        self.support_ = None
         self.support_vectors_ = None
         self.dual_coef_ = None
         self.intercept_ = None
-        self.support_ =None
 
-    def _select_j(self, i, m):
-        j = i
-        while j == i:
-            j = int(random.uniform(0, m))
-        return j
-
-    def _clip_alpha(self, alpha, H, L):
-        if alpha > H:
-            alpha = H
-        if L > alpha:
-            alpha = L
-        return alpha
-
-    def _kernel(self, X1, X2):
+    def kernel_function(self, X1, X2):
+        # 实现线性核函数
         if self.kernel == 'linear':
-            return X1 @ X2.T if X2 is not None else X1 @ X1.T
+            return np.dot(X1, X2)
+        else:
+            raise ValueError("Unknown type of kernel function.")
 
     def fit(self, X, y):
-        self.n_samples, self.n_features = np.shape(X)
-        self.b = 0
-        self.alpha = np.zeros((self.n_samples, 1))
-        iter_num = 0
-        while iter_num < self.max_iter:
+        # 获得样本数及其维数
+        n, d = np.shape(X)
+        self.b = 0.0
+        self.alphas = np.zeros((n, 1))
+        passes = 0
+        
+        while passes < self.max_passes:
             alpha_changed = 0
-            for i in range(self.n_samples):
-                j = self._select_j(i, self.n_samples)
-                x1, x2 = X[i, :], X[j, :]
-                # calculate E1
-                gx1 = np.mean(self.alpha * y * self._kernel(X, x1)) + self.b
-                E1 = gx1 - float(y[i])
-                if (y[i] * E1 < -self.tol
-                        and self.alpha[i] < self.C) or (y[i] * E1 > self.tol
-                                                        and self.alpha[i] > 0):
+            print(f'beginning: {passes, alpha_changed}')
+            for i in range(n):
+                Ei = self._compute_error(X, y, i)
+                if not self._check_KKT(y, i, Ei):
+                    j = self._get_j(i, n)
+                    Xi, Xj = X[i, :], X[j, :]
+                    Ej = self._compute_error(X, y, j)
 
-                    # calculate E2
-                    gx2 = np.mean(
-                        self.alpha * y * self._kernel(X, x2)) + self.b
-                    E2 = gx2 - float(y[j])
-                    # create α1_old and α2_old
-                    alpha1_old = copy.deepcopy(self.alpha[i])
-                    alpha2_old = copy.deepcopy(self.alpha[j])
-                    # calculate H and L
-                    if y[i] != y[j]:
-                        L = max(0, alpha2_old - alpha1_old)
-                        H = min(self.C, self.C + alpha2_old - alpha1_old)
-                    else:
-                        L = max(0, alpha2_old + alpha1_old - self.C)
-                        H = min(self.C, alpha2_old + alpha1_old)
-                    # get eta
-                    eta = self._kernel(x1, x1) + self._kernel(
-                        x2, x2) - 2 * self._kernel(x1, x2)
-                    # get α2_new_unt
-                    self.alpha[j] += y[j] * (E1 - E2) / eta
-                    # get α2_new
-                    self.alpha[j] = self._clip_alpha(self.alpha[j], H, L)
-                    # get α1_new
-                    self.alpha[i] += y[j] * y[i] * (alpha2_old - self.alpha[j])
+                    # calculate alpha_j_new_unc
+                    alpha_i_old = copy.deepcopy(self.alphas[i])
+                    alpha_j_old = copy.deepcopy(self.alphas[j])
+                    eta = self.kernel_function(Xi, Xi) + self.kernel_function(Xj, Xj) - 2 * self.kernel_function(Xi, Xj)
+                    alpha_j_new = alpha_j_old + y[j] * (Ei - Ej) / eta
 
-                    # get b1_new and b2_new
-                    b1 = self.b - E1 - y[i] * self._kernel(x1, x1) * (
-                        self.alpha[i] - alpha1_old) - y[j] * self._kernel(
-                            x2, x1) * (self.alpha[j] - alpha2_old)
-                    b2 = self.b - E2 - y[i] * self._kernel(x1, x2) * (
-                        self.alpha[i] - alpha1_old) - y[j] * self._kernel(
-                            x2, x2) * (self.alpha[j] - alpha2_old)
-                    if 0 < self.alpha[i] < self.C or 0 < self.alpha[j] < self.C:
-                        self.b = b2
-                    else:
-                        self.b = (b1 + b2) / 2
+                    # calculate alpha_j_new
+                    L, H = self._compute_bounds(y, i, j, alpha_i_old, alpha_j_old)
+                    alpha_j_new = self._clip_alpha(alpha_j_new, L, H)
+                    alpha_i_new = alpha_i_old + y[i] * y[j] * (alpha_j_old - alpha_j_new)
+
+                    self.alphas[i], self.alphas[j] = alpha_i_new, alpha_j_new
+
+                    self.b = self._compute_bias(X, y, i, j, Ei, Ej, alpha_i_old, alpha_j_old)
                     alpha_changed += 1
             if alpha_changed == 0:
-                iter_num += 1
-            else:
-                iter_num = 0
-        self.w = np.mean(self.alpha * y * X, axis=0)
+                break
+            passes += 1
+            print(f'end: {passes, alpha_changed}')
+        self.w = self._compute_weights(X, y)
 
         # Store support vectors, dual coefficients, and intercept
-        self.support_ = np.where(self.alpha > 0)[0]
+        self.support_ = np.where(self.alphas > 0)[0]
         self.support_vectors_ = X[self.support_]
-        self.dual_coef_ = self.alpha * y
+        self.dual_coef_ = self.alphas * y
         self.intercept_ = self.b
 
-    def predict(self, X):
-        return np.sign(self.decision_function(X))
+    def _check_KKT(self, y, i, Ei):
+        if  (abs(self.alphas[i]) < self.epsilon and y[i] * Ei > -self.epsilon) \
+        or ((self.alphas[i] > -self.epsilon and self.alphas[i] < self.C + self.epsilon) and abs(y[i] * Ei) < self.epsilon) \
+        or (abs(self.alphas[i] - self.C) < self.epsilon and y[i] * Ei < self.epsilon):
+            return True
+        return False
+        
+    def _clip_alpha(self, alpha, L, H):
+        if alpha > H:
+            alpha = H
+        if alpha < L:
+            alpha = L
+
+        return alpha
+
+    def _get_j(self, i, n):
+        j = i
+        while j == i:
+            j = int(random.uniform(0, n))
+        return j
     
-    def decision_function(self, X):
-        return np.dot(X, self.w) + self.b
+    def _compute_error(self, X, y, i):
+        g_xi = np.mean(self.alphas * y * self.kernel_function(X, X[i, :]) + self.b)
+        return g_xi - float(y[i])
+    
+    def _compute_bounds(self, y, i, j, alpha_i_old, alpha_j_old):
+        L = None
+        H = None
+        if y[i] != y[j]:
+            L = max(0.0, alpha_j_old - alpha_i_old)
+            H = min(self.C, self.C + alpha_j_old - alpha_i_old)
+        else:
+            L = max(0.0, alpha_j_old + alpha_i_old - self.C)
+            H = min(self.C, alpha_j_old + alpha_i_old)
+        return (L, H)
+    
+    def _compute_bias(self, X, y, i, j, Ei, Ej, alpha_i_old, alpha_j_old):
+        delta_alpha_i = self.alphas[i] - alpha_i_old
+        delta_alpha_j = self.alphas[j] - alpha_j_old
 
+        bi = -Ei - y[i] * self.kernel_function(X[i, :], X[i, :]) * delta_alpha_i - \
+             y[j] * self.kernel_function(X[j, :], X[i, :]) * delta_alpha_j + self.b
 
+        bj = -Ej - y[i] * self.kernel_function(X[i, :], X[j, :]) * delta_alpha_i - \
+             y[j] * self.kernel_function(X[j, :], X[j, :]) * delta_alpha_j + self.b
+
+        if 0 < self.alphas[i] < self.C and 0 < self.alphas[j] < self.C:
+            return bj
+        else:
+            return (bi + bj) / 2
+        
+    def _compute_weights(self, X, y):
+        return np.mean(self.alphas * y * X, axis=0)
+    
+    def predict(self, X):
+        return np.sign(np.dot(X, self.w) + self.b)
+            
 X_train = pd.read_csv('breast_cancer_Xtrain.csv', header=0).values
 X_test = pd.read_csv('breast_cancer_Xtest.csv', header=0).values
 
@@ -121,4 +141,5 @@ classifier.fit(X_train, y_train)
 y_pred = classifier.predict(X_test)
 
 accuracy = accuracy_score(y_test, y_pred)
-print("准确率：", accuracy)
+print(f"Test accuracy：{accuracy:.4f}")
+print(f"{classification_report(y_true=y_test, y_pred=y_pred)}")

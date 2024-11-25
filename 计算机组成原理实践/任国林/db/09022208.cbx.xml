@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+<LOG_ROOT>
+	<PROJECT NAME="09022208">
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|GPRs:inst4|lpm_decode0:inst16|lpm_decode:lpm_decode_component" CBX_FILE_NAME="decode_rvf.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|lpm_mux10:inst|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_hrc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|ACU:inst5|lpm_add_sub0:inst|lpm_add_sub:lpm_add_sub_component" CBX_FILE_NAME="add_sub_vhh.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|ALU:inst2|lpm_mux2:inst|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_prc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|ExtU:inst13|lpm_mux4:inst|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_irc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|lpm_mux7:inst12|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_krc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|lpm_mux7:inst16|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_krc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|ALU:inst2|lpm_add_sub1:inst2|lpm_add_sub:lpm_add_sub_component" CBX_FILE_NAME="add_sub_76i.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|ALU:inst2|lpm_clshift1:inst5|lpm_clshift:lpm_clshift_component" CBX_FILE_NAME="lpm_clshift_euc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|ALU:inst2|lpm_mux3:inst8|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_0qc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|DBIU:inst1|lpm_mux9:inst1|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_8qc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|lpm_rom0:inst1|altsyncram:altsyncram_component" CBX_FILE_NAME="altsyncram_tea1.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|ACU:inst5|lpm_mux5:inst1|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_krc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|ALU:inst2|lpm_clshift0:inst3|lpm_clshift:lpm_clshift_component" CBX_FILE_NAME="lpm_clshift_ukb.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|GPRs:inst4|lpm_mux0:inst|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_9tc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|lpm_mux6:inst11|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_irc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|lpm_ram_dq0:inst4|altsyncram:altsyncram_component" CBX_FILE_NAME="altsyncram_egj1.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|DBIU:inst1|lpm_mux4:inst|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_irc.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|computer|cpu:inst|DataPath:inst3|GPRs:inst4|lpm_mux0:inst1|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_9tc.tdf"/>
+	</PROJECT>
+</LOG_ROOT>
