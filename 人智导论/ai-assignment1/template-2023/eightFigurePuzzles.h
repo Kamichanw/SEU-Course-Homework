@@ -9,8 +9,7 @@ const int puzzleNum = 8;
  * yPosition: 列数 0 代表第一行
  * puzzleId: 数码 0~8
  */
-typedef struct
-{
+typedef struct {
     int xPosition;
     int yPosition;
     int puzzleId;
@@ -31,14 +30,13 @@ typedef struct
 
                   depth： 当前状态所处深度
 */
-typedef struct
-{
+typedef struct {
     // vector<PUZZLE> puzzles;
     PUZZLE puzzle[9];
     vector<vector<int>> nextActionList;
     vector<vector<int>> precedeActionList;
     int depth;
-    int height; // 用于计算启发式函数
+    int height;  // 用于计算启发式函数
 
 } PUZZLE_NODE;
 
@@ -53,7 +51,8 @@ vector<int> findZeroPosition(PUZZLE_NODE puzzleNode);
  *
  * 输入：节点状态puzzleNode
  * 输出：actionList初始化后的puzzleNode
- *描述：更新puzzleNode的后继可操作动作状态，其中 （1，0）代表空格向上移动，（-1，0）代表空格向下移动，（0，1）代表空格向左移动，（0，-1）代表空格向右移动。
+ *描述：更新puzzleNode的后继可操作动作状态，其中
+ *（1，0）代表空格向上移动，（-1，0）代表空格向下移动，（0，1）代表空格向左移动，（0，-1）代表空格向右移动。
  */
 PUZZLE_NODE updatePuzzleNodeActionList(PUZZLE_NODE puzzleNode);
 
