@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scanner DFA</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f2f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a73e8;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+        button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #1557b0;
+        }
+        #output {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            min-height: 100px;
+        }
+        .token-types {
+            background: #fff;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .token-types code {
+            background: #e8f0fe;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #1a73e8;
+            font-family: 'Consolas', monospace;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+        li:hover {
+            background: #f8f9fa;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Scanner DFA Simulation</h1>
+        <div class="input-group">
+            <label for="inputString">Enter a string:</label>
+            <input type="text" id="inputString" placeholder="Type here...">
+            <button onclick="scanInput()">Scan</button>
+        </div>
+        <h3>Output:</h3>
+        <pre id="output"></pre>
+        <div class="token-types">
+            <h3>Token Types:</h3>
+            <ul>
+                <li>Algebra Operators: <code>+</code> <code>-</code> <code>*</code> <code>/</code> <code>=</code></li>
+                <li>Relational Operators: <code>!=</code> <code>></code> <code><</code> <code>>=</code> <code><=</code></li>
+                <li>Assignment Operators: <code>=</code></li>
+                <li>Separators: <code>;</code> <code>,</code> <code>(</code> <code>)</code> <code>{</code> <code>}</code> <code>[</code> <code>]</code></li>
+                <li>Identifiers: <code>letter (letter | digit)*</code></li>
+                <li>Integers: <code>digit+</code></li>
+            </ul>
+        </div>
+    </div>
+    <!-- 保持原有的 JavaScript 代码不变 -->
+    <script>
+        class Scanner {
+            constructor() {
+                this.transitions = {
+                    0: {'+': 1, '-': 1, '*': 1, '/': 1, ';': 4, '(': 4, ')': 4, '{': 4, '}': 4, '[': 4, ']': 4, ',': 4, '.': 4, '=': 8, '<': 3, '>': 3, '!': 2},
+                };
+                for (let c of 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+                    this.transitions[0][c] = 5;
+                    this.transitions[5] = this.transitions[5] || {};
+                    this.transitions[5][c] = 5;
+                }
+                for (let c of '0123456789') {
+                    this.transitions[0][c] = 6;
+                    this.transitions[5] = this.transitions[5] || {};
+                    this.transitions[5][c] = 5;
+                    this.transitions[6] = this.transitions[6] || {};
+                    this.transitions[6][c] = 6;
+                }
+                this.transitions[2] = {'=': 7};
+                this.transitions[3] = {'=': 7};
+
+                this.acceptStates = new Set([1, 3, 4, 5, 6, 7, 8]);
+            }
+
+            scan(inputStr) {
+                let tokens = [];
+                let state = 0;
+                let token = "";
+
+                for (let c of inputStr) {
+                    if (this.transitions[state] && this.transitions[state][c] !== undefined) {
+                        state = this.transitions[state][c];
+                        token += c;
+                    } else {
+                        if (this.acceptStates.has(state)) {
+                            tokens.push({ token, type: this.getTokenType(state) });
+                            token = "";
+                            state = 0;
+                            if (this.transitions[state] && this.transitions[state][c] !== undefined) {
+                                state = this.transitions[state][c];
+                                token += c;
+                            }
+                        } else {
+                            return "Invalid token";
+                        }
+                    }
+                }
+
+                if (this.acceptStates.has(state)) {
+                    tokens.push({ token, type: this.getTokenType(state) });
+                } else {
+                    return "Invalid token";
+                }
+
+                return tokens;
+            }
+
+            getTokenType(state) {
+                switch (state) {
+                    case 1: return "Algebra Operators";
+                    case 3: return "Relational Operators";
+                    case 4: return "Separators";
+                    case 5: return "Identifiers";
+                    case 6: return "Integers";
+                    case 7: return "Relational Operators";
+                    case 8: return "Assignment Operator";
+                    default: return "Unknown";
+                }
+            }
+        }
+
+        function scanInput() {
+            const inputStr = document.getElementById("inputString").value;
+            const scanner = new Scanner();
+            const result = scanner.scan(inputStr);
+            const output = document.getElementById("output");
+
+            if (typeof result === "string") {
+                output.textContent = result;
+            } else {
+                output.textContent = result.map(r => `Token: ${r.token}   Type: ${r.type}`).join("\n");
+            }
+        }
+    </script>
+</body>
+</html>
