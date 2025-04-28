@@ -25,3 +25,9 @@
 [submodule "数字图像处理/陈阳"]
 	path = 数字图像处理/陈阳
 	url = git@github.com:JinBridger/SEU-DIP-Labwork.git
+[submodule "计算机系统导论-09J/李博睿"]
+	path = 计算机系统导论-09J/李博睿
+	url = https://github.com/huan-yp/CSAPP-Homework
+[submodule "数据结构/傅忱忱"]
+	path = 数据结构/傅忱忱
+	url = https://github.com/huan-yp/DS-Homework
