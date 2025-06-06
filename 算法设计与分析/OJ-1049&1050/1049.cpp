@@ -33,7 +33,10 @@ int main(){
 			point.push_back({a,b,c});
 		}
 		sort(point.begin(),point.end(),[](cg &a,cg &b){
-			return a.r<b.r;
+			if(a.r != b.r)
+				return a.r < b.r;
+			else return a.l > b.l;
+			
 		});
 		
 		vector<double> ansl,ansv;
@@ -41,7 +44,7 @@ int main(){
 		for(int i=0;i<n;i++){
 			if (lastpos < point[i].l) {
 				ansl.push_back(point[i].l);
-				ansv.push_back(14.1757); //matlab求P（v）/v的最小值，v=14.1757，即14.1757m/s的时候飞固定距离耗能最小
+				ansv.push_back(13.9895); //matlab求P（v）/v的最小值，v=13.9895，即13.9895m/s的时候飞固定距离耗能最小
 				lastpos = point[i].l;
 			}
 			
@@ -54,7 +57,7 @@ int main(){
 			i = j - 1; 
 			
 			double s = (point[i].r-lastpos) / time; 
-			if(s>14.1757)s=14.1757;
+			if(s>13.9895)s=13.9895;
 			ansl.push_back(point[i].r);
 			ansv.push_back(s);
 			
@@ -62,7 +65,7 @@ int main(){
 		}
 		if (lastpos < des) {
 			ansl.push_back(des);
-			ansv.push_back(14.1757); 
+			ansv.push_back(13.9895); 
 			
 		}
 		
