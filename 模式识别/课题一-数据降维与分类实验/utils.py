@@ -81,13 +81,16 @@ class PCA:
     def fit(self, X):
         self.n_features_ = X.shape[1]
         self.n_samples_ = X.shape[0]
-
         n = self.n_samples_
-        R = 1 / (n - 1) * X.T @ X
+        self.mean = np.mean(X, axis=0)
+        X_centered = X - self.mean
+        R = 1 / (n - 1) * (X_centered.T @ X_centered)
         Lambda, Alpha = np.linalg.eig(R)
-        eigen_pair = sorted([(l, a) for l, a in zip(Lambda, Alpha)],
-                            reverse=True,
-                            key=lambda pair: pair[0])
+        eigen_pair = sorted(
+            [(l, a) for l, a in zip(Lambda, Alpha.T)],
+            reverse=True,
+            key=lambda pair: pair[0],
+        )
         ev = [(lambda_i / sum(Lambda)) for lambda_i, _ in eigen_pair]
         cev = np.cumsum(ev)
 
@@ -97,11 +100,12 @@ class PCA:
             self.n_components = np.argwhere(cev <= self.n_components).shape[0]
 
         self.components_ = np.stack(
-            [pair[1] for pair in eigen_pair[:self.n_components]], axis=1)
-        self.explained_variance_ratio_ = cev[:self.n_components]
+            [pair[1] for pair in eigen_pair[: self.n_components]], axis=1
+        )
+        self.explained_variance_ratio_ = cev[: self.n_components]
         self.explained_variance_ = np.array(
-            [pair[0] for pair in eigen_pair[:self.n_components]])
-
+            [pair[0] for pair in eigen_pair[: self.n_components]]
+        )
         return self
 
     def fit_transform(self, X):
@@ -112,10 +116,9 @@ class PCA:
             raise AttributeError(
                 "This PCA instance is not fitted yet. Call 'fit' with appropriate arguments before using this estimator."
             )
-        return X @ self.components_
+        X_centered = X - self.mean
+        return X_centered @ self.components_
 
-
-import numpy as np
 
 class LDA:
     def __init__(self, n_components=None):
